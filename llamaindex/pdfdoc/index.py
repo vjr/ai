@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from dotenv import load_dotenv
@@ -64,6 +65,18 @@ class Indexer:
 
 
 def main() -> int:
+
+    if os.path.exists(PERSIST_DIR):
+
+        choice = input(
+            f"Index persist directory '{PERSIST_DIR}' already exists. Overwrite? [y/n]: "
+        ).lower()
+
+        if choice != "y" and choice != "yes":
+            _logger.info("Exiting...")
+            return 0
+        else:
+            _logger.info("Overwriting...")
 
     load_dotenv()
 

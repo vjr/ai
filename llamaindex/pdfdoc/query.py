@@ -9,6 +9,7 @@ from llama_index.core import (
     load_index_from_storage,
 )
 from llama_index.core.base.base_query_engine import BaseQueryEngine
+from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
 _logger = logging.getLogger(__name__)
@@ -20,8 +21,11 @@ class Queries:
 
     _system_prompt: str = """
     You are a MariaDB expert.
-    You are expected to answer questions about the documentation content provided.
-    At the end of your responses you must also provide additional info such as page number, section, etc.
+
+    You are expected to answer questions from the MariaDB documentation content provided.
+
+    At the end of your responses you must also provide additional relevant information such as
+    the page numbers and, if available, the current chapter titles and current chapter numbers of the pages.
     """
 
     _index: VectorStoreIndex
@@ -30,15 +34,21 @@ class Queries:
 
     def __init__(self) -> None:
 
+        _logger.info("Initialising...")
+
         Settings.llm = OpenAI(
             "gpt-4o", temperature=0.1, system_prompt=self._system_prompt
         )
 
+        Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+
     def load(self) -> None:
+
+        _logger.info("Loading index...")
 
         storage = StorageContext.from_defaults(persist_dir="storage")
 
-        _logger.info("Loading index")
+        _logger.info("Creating index...")
 
         self._index = load_index_from_storage(storage)
 
@@ -46,7 +56,7 @@ class Queries:
 
     def query(self, query: str) -> str:
 
-        _logger.info("Running query: %s", query)
+        _logger.info("Answering: %s", query)
 
         return self._query_engine.query(query)
 
@@ -61,6 +71,13 @@ def main() -> int:
     response = queries.query("How do I create a table in MariaDB?")
 
     print("Response:", response)
+
+    query: str = input("Ask: ")
+
+    while query not in ["exit", "quit", "bye"]:
+        response = queries.query(query)
+        print("Response:", response)
+        query = input("Ask: ")
 
     return 0
 

@@ -6,6 +6,14 @@ from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
+from constants import (
+    OPENAI_EMBEDDING_MODEL,
+    OPENAI_MODEL,
+    OPENAI_TEMPERATURE,
+    PDF_FILENAME,
+    PERSIST_DIR,
+)
+
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
 _logger.addHandler(logging.StreamHandler())
@@ -30,16 +38,18 @@ class Indexer:
         _logger.info("Initialising...")
 
         Settings.llm = OpenAI(
-            "gpt-4o", temperature=0.1, system_prompt=self._system_prompt
+            OPENAI_MODEL,
+            temperature=OPENAI_TEMPERATURE,
+            system_prompt=self._system_prompt,
         )
 
-        Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+        Settings.embed_model = OpenAIEmbedding(model=OPENAI_EMBEDDING_MODEL)
 
     def index(self) -> None:
 
         _logger.info("Loading...")
 
-        reader = SimpleDirectoryReader(input_files=["MariaDBServerKnowledgeBase.pdf"])
+        reader = SimpleDirectoryReader(input_files=[PDF_FILENAME])
 
         documents = reader.load_data(show_progress=True)
 
@@ -50,7 +60,7 @@ class Indexer:
     def persist(self) -> None:
 
         _logger.info("Persisting...")
-        self._index.storage_context.persist("storage")
+        self._index.storage_context.persist(PERSIST_DIR)
 
 
 def main() -> int:

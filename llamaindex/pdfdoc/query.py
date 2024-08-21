@@ -1,5 +1,6 @@
 import logging
 import sys
+from pprint import pprint
 
 from dotenv import load_dotenv
 from llama_index.core import (
@@ -11,6 +12,13 @@ from llama_index.core import (
 from llama_index.core.base.base_query_engine import BaseQueryEngine
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
+
+from constants import (
+    OPENAI_EMBEDDING_MODEL,
+    OPENAI_MODEL,
+    OPENAI_TEMPERATURE,
+    PERSIST_DIR,
+)
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
@@ -37,17 +45,19 @@ class Queries:
         _logger.info("Initialising...")
 
         Settings.llm = OpenAI(
-            "gpt-4o", temperature=0.1, system_prompt=self._system_prompt
+            OPENAI_MODEL,
+            temperature=OPENAI_TEMPERATURE,
+            system_prompt=self._system_prompt,
         )
 
-        Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+        Settings.embed_model = OpenAIEmbedding(model=OPENAI_EMBEDDING_MODEL)
 
     def load(self) -> None:
 
         _logger.info("Loading index...")
 
         try:
-            storage = StorageContext.from_defaults(persist_dir="storage")
+            storage = StorageContext.from_defaults(persist_dir=PERSIST_DIR)
         except FileNotFoundError:
             _logger.error(
                 "No persisted index found. Please run 'python index.py' first."
@@ -74,15 +84,9 @@ def main() -> int:
 
     queries.load()
 
-    response = queries.query("How do I create a table in MariaDB?")
-
-    print("Response:", response)
-
-    query: str = input("Ask: ")
-
     while query not in ["exit", "quit", "bye"]:
         response = queries.query(query)
-        print("Response:", response)
+        pprint.pprint("Response:", response)
         query = input("Ask: ")
 
     return 0

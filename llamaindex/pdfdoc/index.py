@@ -18,7 +18,7 @@ class Indexer:
 
     You are expected to answer questions from the MariaDB documentation content provided.
 
-    You must track the page numbers.
+    You must track all the tables of contents and the page numbers of the document.
 
     You must track the current chapter title and current chapter number for every page.
     """

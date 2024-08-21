@@ -1,6 +1,5 @@
 import logging
 import sys
-from pprint import pprint
 
 from dotenv import load_dotenv
 from llama_index.core import (
@@ -72,12 +71,13 @@ class Queries:
 
     def query(self, query: str) -> str:
 
-        _logger.info("Answering: %s", query)
+        _logger.info("Thinking...")
 
         return self._query_engine.query(query)
 
 
 def main() -> int:
+
     load_dotenv()
 
     queries = Queries()
@@ -87,8 +87,8 @@ def main() -> int:
     query = input("Ask: ")
 
     while query not in ["exit", "quit", "bye"]:
-        response = queries.query(query)
-        pprint.pprint("Response:", response)
+        answer = queries.query(query)
+        print("Answer:", answer)
         query = input("Ask: ")
 
     return 0

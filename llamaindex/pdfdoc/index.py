@@ -48,7 +48,7 @@ class Indexer:
 
     def index(self) -> None:
 
-        _logger.info("Loading...")
+        _logger.info(f"Loading {PDF_FILENAME} ...")
 
         reader = SimpleDirectoryReader(input_files=[PDF_FILENAME])
 

@@ -1,6 +1,6 @@
 Index and query a larger PDF.
 
-NOTES:
+#### NOTES:
 
 - Create a local `.env` file and specify your `OPENAI_API_KEY`.
 - Run `python -m venv .venv` to create a virtual environment.

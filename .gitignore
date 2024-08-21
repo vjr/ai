@@ -12,3 +12,7 @@ venv*/
 .env
 local.env
 
+# python cache
+
+__pycache__/
+

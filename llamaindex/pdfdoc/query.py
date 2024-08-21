@@ -46,7 +46,13 @@ class Queries:
 
         _logger.info("Loading index...")
 
-        storage = StorageContext.from_defaults(persist_dir="storage")
+        try:
+            storage = StorageContext.from_defaults(persist_dir="storage")
+        except FileNotFoundError:
+            _logger.error(
+                "No persisted index found. Please run 'python index.py' first."
+            )
+            sys.exit(1)
 
         _logger.info("Creating index...")
 

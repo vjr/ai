@@ -84,6 +84,8 @@ def main() -> int:
 
     queries.load()
 
+    query = input("Ask: ")
+
     while query not in ["exit", "quit", "bye"]:
         response = queries.query(query)
         pprint.pprint("Response:", response)

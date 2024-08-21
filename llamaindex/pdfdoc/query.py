@@ -33,6 +33,8 @@ class Queries:
 
     At the end of your responses you must also provide additional relevant information such as
     the page numbers and the current chapter titles and current chapter numbers of the pages.
+
+    Do not format your responses in any way. Only output plain text.
     """
 
     _index: VectorStoreIndex

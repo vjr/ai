@@ -31,10 +31,9 @@ class Queries:
 
     You are expected to answer questions from the MariaDB documentation content provided.
 
-    At the end of your responses you must also provide additional relevant information such as
-    the page numbers and the current chapter titles and current chapter numbers of the pages.
+    Append your response with the chapter, number, page number and total pages.
 
-    Do not format your responses in any way. Only output plain text.
+    Do not format your response in any way. Only output plain text.
     """
 
     _index: VectorStoreIndex

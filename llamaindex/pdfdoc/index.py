@@ -1,9 +1,14 @@
 import logging
 import os
+
+# import shutil
 import sys
 
+# import pymupdf
 from dotenv import load_dotenv
 from llama_index.core import Settings, SimpleDirectoryReader, VectorStoreIndex
+
+# from llama_index.core.schema import Document, ImageDocument
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
@@ -14,6 +19,12 @@ from constants import (
     PDF_FILENAME,
     PERSIST_DIR,
 )
+
+# from pathlib import Path
+
+
+# from llama_index.readers.file import PyMuPDFReader
+
 
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.INFO)
@@ -27,9 +38,9 @@ class Indexer:
 
     You are expected to answer questions from the MariaDB documentation content provided.
 
-    You must track all the tables of contents and the page numbers of the document.
+    You must track the main table of contents and the page numbers of the document.
 
-    You must track the current chapter title and current chapter number for every page.
+    You must track the current chapter for every page from the main table of contents.
     """
 
     _index: VectorStoreIndex
@@ -49,6 +60,32 @@ class Indexer:
     def index(self) -> None:
 
         _logger.info(f"Loading {PDF_FILENAME} ...")
+
+        # pdfreader = PyMuPDFReader()
+        # pages = pdfreader.load_data(file_path=Path(PDF_FILENAME))
+        # documents = []
+        # for page in pages:
+        #     document = ImageDocument()
+        #     documents.append(page.get_p)
+
+        # if os.path.exists(PERSIST_DIR):
+        #     shutil.rmtree(PERSIST_DIR)
+
+        # os.makedirs(f"{PERSIST_DIR}/images", exist_ok=True)
+
+        # doc = pymupdf.open(PDF_FILENAME)
+
+        # for page in doc.pages():
+        #     pixmap = page.get_pixmap()
+        #     pixmap.save(f"{PERSIST_DIR}/images/page-{page.number}.png")
+
+        # extractor = {".pdf": pdfreader}
+
+        # reader = SimpleDirectoryReader(
+        #     input_files=[PDF_FILENAME], file_extractor=extractor
+        # )
+
+        # reader = SimpleDirectoryReader(input_dir=f"{PERSIST_DIR}/images")
 
         reader = SimpleDirectoryReader(input_files=[PDF_FILENAME])
 
